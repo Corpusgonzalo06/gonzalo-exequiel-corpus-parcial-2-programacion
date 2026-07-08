@@ -1,0 +1,4 @@
+=== REPORTE DE PRODUCTOS CON PRECIO SUPERIOR A $500.000 ===
+==========================================================
+
+Código: 4039039 | linux 3000 | Precio: $1500000,00 | Stock: 4

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<!-- Vista principal de la aplicación asociada al controlador -->
+<AnchorPane prefHeight="650.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/26"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="parcialdos.PrincipalController">
+
+    <children>
+
+        <!-- Divide la ventana en dos secciones: formulario y tabla -->
+        <SplitPane dividerPositions="0.4"
+                   AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="0.0">
+
+            <items>
+
+                <!-- ==================== PANEL IZQUIERDO ==================== -->
+                <!-- Formulario para alta y modificación de productos -->
+                <ScrollPane fitToWidth="true">
+                    <content>
+
+                        <VBox spacing="12.0">
+                            <padding>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </padding>
+
+                            <children>
+
+                                <Label text="Gestión de Producto"
+                                       style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+
+                                <Separator />
+
+                                <!-- Datos básicos del producto -->
+                                <Label text="Código:" />
+                                <TextField fx:id="txtCodigo" />
+
+                                <Label text="Marca:" />
+                                <TextField fx:id="txtMarca" />
+
+                                <Label text="Modelo:" />
+                                <TextField fx:id="txtModelo" />
+
+                                <Label text="Precio:" />
+                                <TextField fx:id="txtPrecio" />
+
+                                <Label text="Stock Inicial:" />
+                                <TextField fx:id="txtStock" />
+
+                                <!-- Proveedor seleccionado desde el CSV -->
+                                <Label text="Proveedor:" />
+                                <ComboBox fx:id="cmbProveedor" prefWidth="250.0" />
+
+                                <!-- Tipo de producto -->
+                                <Label text="Tipo de Producto:" />
+
+                                <HBox spacing="15.0">
+                                    <children>
+
+                                        <!-- Cambia el atributo especial a Vencimiento -->
+                                        <RadioButton fx:id="rbAlimenticio"
+                                                     mnemonicParsing="false"
+                                                     selected="true"
+                                                     text="Alimenticio"
+                                                     onAction="#handleCambioTipo">
+
+                                            <toggleGroup>
+                                                <ToggleGroup fx:id="tipoProductoGroup" />
+                                            </toggleGroup>
+
+                                        </RadioButton>
+
+                                        <!-- Cambia el atributo especial a Garantía -->
+                                        <RadioButton fx:id="rbElectronico"
+                                                     mnemonicParsing="false"
+                                                     text="Electrónico"
+                                                     toggleGroup="$tipoProductoGroup"
+                                                     onAction="#handleCambioTipo"/>
+
+                                    </children>
+                                </HBox>
+
+                                <!-- Campo dinámico: Vencimiento o Garantía -->
+                                <Label fx:id="lblAtributoEspecial"
+                                       text="Vencimiento (DD/MM/AAAA):"/>
+
+                                <TextField fx:id="txtAtributoEspecial"/>
+
+                                <Separator />
+
+                                <!-- Botones principales del CRUD -->
+                                <HBox spacing="10.0" alignment="CENTER">
+                                    <children>
+
+                                        <Button mnemonicParsing="false"
+                                                onAction="#handleAgregar"
+                                                text="Agregar"
+                                                prefWidth="80.0"
+                                                style="-fx-background-color: #28a745; -fx-text-fill: white;" />
+
+                                        <Button mnemonicParsing="false"
+                                                onAction="#handleModificar"
+                                                text="Modificar"
+                                                prefWidth="80.0"
+                                                style="-fx-background-color: #ffc107; -fx-text-fill: black;" />
+
+                                        <Button mnemonicParsing="false"
+                                                onAction="#handleEliminar"
+                                                text="Eliminar"
+                                                prefWidth="80.0"
+                                                style="-fx-background-color: #dc3545; -fx-text-fill: white;" />
+
+                                    </children>
+                                </HBox>
+
+                            </children>
+
+                        </VBox>
+
+                    </content>
+                </ScrollPane>
+
+                <!-- ==================== PANEL DERECHO ==================== -->
+                <!-- Tabla con el inventario de productos -->
+                <VBox spacing="15.0">
+
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+
+                    <children>
+
+                        <Label text="Lista de Productos en Inventario"
+                               style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+
+                        <!-- Tabla principal -->
+                        <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS">
+
+                            <!-- Columnas que muestran la información del producto -->
+                            <columns>
+
+                                <TableColumn fx:id="colCodigo" prefWidth="90.0" text="Código" />
+                                <TableColumn fx:id="colMarca" prefWidth="100.0" text="Marca" />
+                                <TableColumn fx:id="colModelo" prefWidth="100.0" text="Modelo" />
+                                <TableColumn fx:id="colPrecio" prefWidth="90.0" text="Precio" />
+                                <TableColumn fx:id="colStock" prefWidth="70.0" text="Stock" />
+                                <TableColumn fx:id="colProveedor" prefWidth="120.0" text="Proveedor" />
+
+                            </columns>
+
+                        </TableView>
+
+                        <Separator />
+
+                        <!-- Funciones adicionales del sistema -->
+                        <HBox spacing="15.0" alignment="CENTER_RIGHT">
+
+                            <children>
+
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleVerTotalInventario"
+                                        text="Ver Total Inventario"
+                                        style="-fx-background-color: #17a2b8; -fx-text-fill: white;" />
+
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleExportarCaros"
+                                        text="Exportar Caros (&gt;$500k)"
+                                        style="-fx-background-color: #6c757d; -fx-text-fill: white;" />
+
+                                <Button mnemonicParsing="false"
+                                        onAction="#handleVisualizarReporte"
+                                        text="Ver Reporte TXT"
+                                        style="-fx-background-color: #343a40; -fx-text-fill: white;" />
+
+                            </children>
+
+                        </HBox>
+
+                    </children>
+
+                </VBox>
+
+            </items>
+
+        </SplitPane>
+
+    </children>
+
+</AnchorPane>
